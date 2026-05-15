@@ -18,6 +18,7 @@ export function SiteNav() {
   const goToSection = (id: string) => {
     setOpen(false);
     if (onHome) {
+      history.replaceState(null, "", `#${id}`);
       document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     } else {
       navigate({ to: "/", hash: id });
