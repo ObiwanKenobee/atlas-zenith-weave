@@ -24,11 +24,27 @@ export const Route = createFileRoute("/")({
 });
 
 function scrollToId(id: string) {
+  // Update URL hash without jumping; SiteNav handles smooth scroll separately.
+  if (typeof window !== "undefined") {
+    history.replaceState(null, "", `#${id}`);
+  }
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 }
 
 function AtlasSanctumPrototype() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Smooth-scroll to hash target when arriving from another route or on reload.
+  useEffect(() => {
+    const hash = location.hash?.replace(/^#/, "");
+    if (!hash) return;
+    // Wait a frame for the DOM to mount the section.
+    const id = window.requestAnimationFrame(() => {
+      document.getElementById(hash)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    return () => window.cancelAnimationFrame(id);
+  }, [location.hash]);
 
   const pillars = [
     {
