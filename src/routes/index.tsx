@@ -1,4 +1,6 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { SiteNav } from "@/components/SiteNav";
+import { SignupForm } from "@/components/SignupForm";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -20,7 +22,13 @@ export const Route = createFileRoute("/")({
   component: AtlasSanctumPrototype,
 });
 
+function scrollToId(id: string) {
+  document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+}
+
 function AtlasSanctumPrototype() {
+  const navigate = useNavigate();
+
   const pillars = [
     {
       title: "Living Infrastructure",
@@ -61,6 +69,8 @@ function AtlasSanctumPrototype() {
 
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden">
+      <SiteNav />
+
       <section className="relative border-b border-white/10">
         <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/10 via-cyan-500/5 to-yellow-500/10" />
         <div className="relative max-w-7xl mx-auto px-6 py-24 lg:py-36">
@@ -81,15 +91,21 @@ function AtlasSanctumPrototype() {
                 flourishing across the Global South.
               </p>
               <div className="mt-10 flex flex-wrap gap-4">
-                <button className="px-6 py-3 rounded-2xl bg-emerald-400 text-black font-semibold hover:scale-105 transition-transform">
+                <button
+                  onClick={() => scrollToId("vision")}
+                  className="px-6 py-3 rounded-2xl bg-emerald-400 text-black font-semibold hover:scale-105 transition-transform"
+                >
                   Explore The Vision
                 </button>
-                <button className="px-6 py-3 rounded-2xl border border-white/20 hover:bg-white/5 transition-colors">
+                <button
+                  onClick={() => scrollToId("systems")}
+                  className="px-6 py-3 rounded-2xl border border-white/20 hover:bg-white/5 transition-colors"
+                >
                   View Architecture
                 </button>
               </div>
             </div>
-            <div className="relative">
+            <div id="systems" className="relative scroll-mt-20">
               <div className="absolute inset-0 blur-3xl bg-cyan-400/20 rounded-full" />
               <div className="relative rounded-[2rem] border border-white/10 bg-white/5 backdrop-blur-xl p-8 shadow-2xl">
                 <div className="flex items-center justify-between mb-8">
@@ -120,7 +136,7 @@ function AtlasSanctumPrototype() {
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-6 py-24">
+      <section id="vision" className="max-w-7xl mx-auto px-6 py-24 scroll-mt-20">
         <div className="max-w-3xl mb-16">
           <p className="text-sm uppercase tracking-[0.3em] text-emerald-300 mb-4">
             Core Philosophy
@@ -148,7 +164,7 @@ function AtlasSanctumPrototype() {
         </div>
       </section>
 
-      <section className="border-y border-white/10 bg-gradient-to-b from-zinc-950 to-black">
+      <section id="roadmap" className="border-y border-white/10 bg-gradient-to-b from-zinc-950 to-black scroll-mt-20">
         <div className="max-w-7xl mx-auto px-6 py-24">
           <div className="grid lg:grid-cols-2 gap-16 items-start">
             <div>
@@ -191,7 +207,7 @@ function AtlasSanctumPrototype() {
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-6 py-24">
+      <section id="mission" className="max-w-7xl mx-auto px-6 py-24 scroll-mt-20">
         <div className="rounded-[2.5rem] border border-white/10 bg-gradient-to-br from-emerald-400/10 via-cyan-400/5 to-yellow-200/10 p-10 lg:p-16 relative overflow-hidden">
           <div className="absolute top-0 right-0 h-72 w-72 rounded-full bg-cyan-300/10 blur-3xl" />
           <div className="relative max-w-4xl">
@@ -210,30 +226,42 @@ function AtlasSanctumPrototype() {
               opportunity through resilient decentralized infrastructure.
             </p>
             <div className="mt-12 flex flex-wrap gap-4">
-              <button className="px-7 py-4 rounded-2xl bg-white text-black font-semibold hover:scale-105 transition-transform">
+              <button
+                onClick={() => {
+                  document.getElementById("signup")?.scrollIntoView({ behavior: "smooth" });
+                }}
+                className="px-7 py-4 rounded-2xl bg-white text-black font-semibold hover:scale-105 transition-transform"
+              >
                 Join The Mission
               </button>
-              <button className="px-7 py-4 rounded-2xl border border-white/20 hover:bg-white/5 transition-colors">
+              <Link
+                to="/whitepaper"
+                className="px-7 py-4 rounded-2xl border border-white/20 hover:bg-white/5 transition-colors"
+              >
                 Download Whitepaper
-              </button>
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
-      <footer className="border-t border-white/10 py-10 px-6">
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+      <footer id="signup" className="border-t border-white/10 py-16 px-6 scroll-mt-20">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12">
           <div>
             <h3 className="text-2xl font-black">Atlas Sanctum</h3>
-            <p className="text-zinc-500 mt-2">
+            <p className="text-zinc-500 mt-2 max-w-md">
               Chief Architects of Planetary Systems & Distributed Intelligence.
             </p>
+            <div className="flex flex-wrap gap-x-6 gap-y-2 text-zinc-400 text-sm mt-8">
+              <button onClick={() => scrollToId("vision")} className="hover:text-emerald-300">Vision</button>
+              <button onClick={() => scrollToId("systems")} className="hover:text-emerald-300">Systems</button>
+              <button onClick={() => scrollToId("roadmap")} className="hover:text-emerald-300">Roadmap</button>
+              <button onClick={() => scrollToId("mission")} className="hover:text-emerald-300">Mission</button>
+              <button onClick={() => navigate({ to: "/whitepaper" })} className="hover:text-emerald-300">Whitepaper</button>
+            </div>
           </div>
-          <div className="flex gap-6 text-zinc-400 text-sm">
-            <span>Infrastructure</span>
-            <span>AI Systems</span>
-            <span>Mesh Networks</span>
-            <span>Humanitarian Coordination</span>
+          <div className="flex lg:justify-end">
+            <SignupForm />
           </div>
         </div>
       </footer>
